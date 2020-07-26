@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Joseph Sawyer</Authors>
+    <Copyright>Joseph Sawyer</Copyright>
+    <PackageProjectUrl>https://www.jcsawyer.com</PackageProjectUrl>
+    <Description>Jc application multi tenancy azure library</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.4.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Jc.MultiTenancy.Stores\Jc.MultiTenancy.Stores.csproj" />
+  </ItemGroup>
+
+</Project>

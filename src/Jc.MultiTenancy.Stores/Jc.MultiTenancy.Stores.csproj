@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Joseph Sawyer</Authors>
+    <Description>Jc application multi tenancy stores library</Description>
+    <Copyright>Joseph Sawyer</Copyright>
+    <PackageProjectUrl>https://www.jcsawyer.com</PackageProjectUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Jc.MultiTenancy\Jc.MultiTenancy.csproj" />
+  </ItemGroup>
+
+</Project>

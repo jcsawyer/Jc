@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Joseph Sawyer</Authors>
+    <Description>Jc application multi tenancy entity framework library</Description>
+    <Copyright>Joseph Sawyer</Copyright>
+    <PackageProjectUrl>https://www.jcsawyer.com</PackageProjectUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Jc.MultiTenancy.Extensions\Jc.MultiTenancy.Extensions.csproj" />
+    <ProjectReference Include="..\Jc.MultiTenancy.Stores\Jc.MultiTenancy.Stores.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Authors>Joseph Sawyer</Authors>
+    <Description>Jc application core library</Description>
+    <Copyright>Joseph Sawyer</Copyright>
+    <PackageProjectUrl>https://www.jcsawyer.com</PackageProjectUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Attributes\" />
+  </ItemGroup>
+
+</Project>

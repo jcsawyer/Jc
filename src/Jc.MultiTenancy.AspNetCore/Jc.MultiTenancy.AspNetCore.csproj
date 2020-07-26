@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Authors>Joseph Sawyer</Authors>
+    <Description>Jc AspNetCore application multi tenancy library</Description>
+    <Copyright>Joseph Sawyer</Copyright>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://www.jcsawyer.com</PackageProjectUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="3.1.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Jc.MultiTenancy.Caching\Jc.MultiTenancy.Caching.csproj" />
+    <ProjectReference Include="..\Jc.MultiTenancy.Extensions\Jc.MultiTenancy.Extensions.csproj" />
+  </ItemGroup>
+
+</Project>
