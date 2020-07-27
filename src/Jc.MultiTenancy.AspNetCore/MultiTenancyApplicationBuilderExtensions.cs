@@ -13,6 +13,19 @@ namespace Microsoft.AspNetCore.Builder
     public static class MultiTenancyApplicationBuilderExtensions
     {
         /// <summary>
+        /// Add tenant resolve middleware
+        /// </summary>
+        /// <typeparam name="TTenant">Type of tenant</typeparam>
+        /// <returns><see cref="IApplicationBuilder"/> builder</returns>
+        public static IApplicationBuilder UseMultiTenancy<TTenant>(this IApplicationBuilder app)
+            where TTenant : class, ITenant
+        {
+            app.UseMiddleware<TenantResolverMiddleware<TTenant>>();
+            app.UseMiddleware<TenantUnresolvedMiddleware<TTenant>>();
+            return app;
+        }
+
+        /// <summary>
         /// Add per-tenant application middleware through the
         /// <see cref="TenantPipelineBuilderContext{TTenant}"/>
         /// </summary>
