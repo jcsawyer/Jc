@@ -7,6 +7,7 @@
     <Copyright>Joseph Sawyer</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageProjectUrl>https://www.jcsawyer.com</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/jcsawyer/Jc</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>

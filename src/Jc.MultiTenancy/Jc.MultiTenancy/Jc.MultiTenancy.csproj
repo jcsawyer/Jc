@@ -8,6 +8,7 @@
     <Description>Jc application multi tenancy library</Description>
     <Copyright>Joseph Sawyer</Copyright>
     <PackageProjectUrl>https://www.jcsawyer.com</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/jcsawyer/Jc</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>

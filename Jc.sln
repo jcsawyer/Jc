@@ -3,23 +3,23 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.1000
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jc.MultiTenancy", "src\Jc.MultiTenancy\Jc.MultiTenancy.csproj", "{05008268-1870-4D5D-94F6-69BA8CC7A43F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jc.MultiTenancy", "src\Jc.MultiTenancy\Jc.MultiTenancy\Jc.MultiTenancy.csproj", "{05008268-1870-4D5D-94F6-69BA8CC7A43F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jc.MultiTenancy.AspNetCore", "src\Jc.MultiTenancy.AspNetCore\Jc.MultiTenancy.AspNetCore.csproj", "{AD05099A-DA48-4D59-9D65-3EF3A47E9700}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jc.MultiTenancy.AspNetCore", "src\Jc.MultiTenancy\Jc.MultiTenancy.AspNetCore\Jc.MultiTenancy.AspNetCore.csproj", "{AD05099A-DA48-4D59-9D65-3EF3A47E9700}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jc.MultiTenancy.EntityFramework", "src\Jc.MultiTenancy.EntityFramework\Jc.MultiTenancy.EntityFramework.csproj", "{FAF6F149-61F0-4721-BD30-7DCEAD958389}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jc.MultiTenancy.EntityFramework", "src\Jc.MultiTenancy\Jc.MultiTenancy.EntityFramework\Jc.MultiTenancy.EntityFramework.csproj", "{FAF6F149-61F0-4721-BD30-7DCEAD958389}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jc.MultiTenancy.Extensions", "src\Jc.MultiTenancy.Extensions\Jc.MultiTenancy.Extensions.csproj", "{4CCDE2A8-C8AC-45A3-BB42-ADD0D597868D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jc.MultiTenancy.Extensions", "src\Jc.MultiTenancy\Jc.MultiTenancy.Extensions\Jc.MultiTenancy.Extensions.csproj", "{4CCDE2A8-C8AC-45A3-BB42-ADD0D597868D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jc.MultiTenancy.Stores", "src\Jc.MultiTenancy.Stores\Jc.MultiTenancy.Stores.csproj", "{45CFA184-9A17-43F6-99BC-39EE6B622BE5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jc.MultiTenancy.Stores", "src\Jc.MultiTenancy\Jc.MultiTenancy.Stores\Jc.MultiTenancy.Stores.csproj", "{45CFA184-9A17-43F6-99BC-39EE6B622BE5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jc.Core", "src\Jc.Core\Jc.Core.csproj", "{8DD32230-4516-4D6A-86F1-B2B436A75C1A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jc.MultiTenancy.Caching", "src\Jc.MultiTenancy.Caching\Jc.MultiTenancy.Caching.csproj", "{BA2516B4-406D-4FD5-B5FB-0DD583B93505}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jc.MultiTenancy.Caching", "src\Jc.MultiTenancy\Jc.MultiTenancy.Caching\Jc.MultiTenancy.Caching.csproj", "{BA2516B4-406D-4FD5-B5FB-0DD583B93505}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MultiTenancy", "MultiTenancy", "{2C4C0053-64E8-4119-95AB-546EF084E24B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jc.MultiTenancy.Azure", "src\Jc.MultiTenancy.Azure\Jc.MultiTenancy.Azure.csproj", "{85646BA0-2852-45AF-978A-3CBAEDA6707C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jc.MultiTenancy.Azure", "src\Jc.MultiTenancy\Jc.MultiTenancy.Azure\Jc.MultiTenancy.Azure.csproj", "{85646BA0-2852-45AF-978A-3CBAEDA6707C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

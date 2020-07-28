@@ -4,14 +4,11 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Joseph Sawyer</Authors>
-    <Description>Jc application multi tenancy extensions library</Description>
-    <PackageProjectUrl>https://www.jcsawyer.com</PackageProjectUrl>
+    <Description>Jc application multi tenancy stores library</Description>
     <Copyright>Joseph Sawyer</Copyright>
+    <PackageProjectUrl>https://www.jcsawyer.com</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/jcsawyer/Jc</RepositoryUrl>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.6" />
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Jc.MultiTenancy\Jc.MultiTenancy.csproj" />
