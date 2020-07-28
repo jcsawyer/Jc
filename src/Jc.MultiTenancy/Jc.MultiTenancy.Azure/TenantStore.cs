@@ -60,6 +60,9 @@ namespace Jc.MultiTenancy.Azure
         /// <inheritdoc/>
         public async Task<JcResult> UpdateAsync([NotNull] TTenant tenant, CancellationToken cancellationToken = default)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+            ThrowIfDisposed();
+            
             var tenants = (await LoadTenantsFromBlobStorageAsync(cancellationToken)).ToList();
             var tenantToUpdate = tenants.SingleOrDefault(x => x.Id == tenant.Id);
 
@@ -72,6 +75,9 @@ namespace Jc.MultiTenancy.Azure
         /// <inheritdoc/>
         public async Task<JcResult> DeleteAsync([NotNull] TTenant tenant, CancellationToken cancellationToken = default)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+            ThrowIfDisposed();
+
             var tenants = (await LoadTenantsFromBlobStorageAsync(cancellationToken)).ToList();
             var tenantToDelete = tenants.SingleOrDefault(x => x.Id == tenant.Id);
 
@@ -84,6 +90,9 @@ namespace Jc.MultiTenancy.Azure
         /// <inheritdoc/>
         public async Task<TTenant> FindByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+            ThrowIfDisposed();
+
             var tenants = (await LoadTenantsFromBlobStorageAsync(cancellationToken)).ToList();
             return tenants.FirstOrDefault(x => x.Id == id);
         }
@@ -91,6 +100,9 @@ namespace Jc.MultiTenancy.Azure
         /// <inheritdoc/>
         public async Task<TTenant> FindByNameAsync(string name, CancellationToken cancellationToken = default)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+            ThrowIfDisposed();
+
             var tenants = (await LoadTenantsFromBlobStorageAsync(cancellationToken)).ToList();
             return tenants.FirstOrDefault(x => x.Name == name);
         }
@@ -98,6 +110,9 @@ namespace Jc.MultiTenancy.Azure
         /// <inheritdoc/>
         public async Task<TTenant> FindByHostAsync(string host, CancellationToken cancellationToken = default)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+            ThrowIfDisposed();
+
             var tenants = (await LoadTenantsFromBlobStorageAsync(cancellationToken)).ToList();
             return tenants.FirstOrDefault(x => x.Host == host);
         }
