@@ -38,9 +38,9 @@ namespace Jc.MultiTenancy
             IOptions<MultiTenancyOptions> options,
             ILogger<TenantManager<TTenant>> logger)
         {
-            Store = store;
-            Options = options.Value ?? new MultiTenancyOptions();
-            Logger = logger;
+            Store = store ?? throw new ArgumentNullException(nameof(store));
+            Options = options?.Value ?? new MultiTenancyOptions();
+            Logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace Jc.MultiTenancy
             {
                 var queryableStore = Store as IQueryableTenantStore<TTenant>;
                 if (queryableStore == null)
-                    throw new NotSupportedException("Store does not implement IQueryable<TTenant>");
+                    throw new NotSupportedException("Store does not implement IQueryableTenantStore<TTenant>");
 
                 return queryableStore.Tenants;
             }

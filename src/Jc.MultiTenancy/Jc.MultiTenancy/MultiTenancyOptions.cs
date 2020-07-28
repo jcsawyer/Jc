@@ -22,12 +22,12 @@
         /// <summary>
         /// Gets or sets the redirect url for when a tenant cannot be resolved
         /// </summary>
-        public string RedirectUrl { get; set; }
+        public string RedirectUrl { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the redirect url for when a resolved tenant is inactive.
         /// If not set, the <see cref="RedirectUrl"/> will be used by default
         /// </summary>
-        public string InactiveRedirectUrl { get; set; }
+        public string InactiveRedirectUrl { get; set; } = string.Empty;
     }
 }
