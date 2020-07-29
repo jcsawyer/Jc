@@ -56,6 +56,6 @@ namespace Jc.Core
         public override string ToString()
             => Succeeded
                 ? "Succeeded"
-                : $"Failed: {string.Join(",", Errors.Select(x => x.Code).ToList())}";
+                : $"Failed{(Errors.Count() > 0 ? $": {string.Join(",", Errors.Select(x => x.Code).ToList())}" : "")}";
     }
 }

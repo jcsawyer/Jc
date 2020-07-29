@@ -108,7 +108,7 @@ namespace Jc.MultiTenancy.Tests
         [TestMethod]
         public async Task CreateAsync_Returns_Error_Result_With_Errprs_When_Store_Unsucessful()
         {
-            var error = new JcError { Code = "T35T", Description = "Testing" };
+            var error = new JcError("T35T", "Testing");
             _store.Setup(x => x.CreateAsync(It.IsAny<ITenant>(), It.IsAny<CancellationToken>()))
                 .Returns(async () => await Task.FromResult(JcResult.Failed(error)));
 
@@ -144,7 +144,7 @@ namespace Jc.MultiTenancy.Tests
         [TestMethod]
         public async Task UpdateAsync_Returns_Error_Result_With_Errprs_When_Store_Unsucessful()
         {
-            var error = new JcError { Code = "T35T", Description = "Testing" };
+            var error = new JcError("T35T", "Testing");
             _store.Setup(x => x.UpdateAsync(It.IsAny<ITenant>(), It.IsAny<CancellationToken>()))
                 .Returns(async () => await Task.FromResult(JcResult.Failed(error)));
 
@@ -180,7 +180,7 @@ namespace Jc.MultiTenancy.Tests
         [TestMethod]
         public async Task DeleteAsync_Returns_Error_Result_With_Errprs_When_Store_Unsucessful()
         {
-            var error = new JcError { Code = "T35T", Description = "Testing" };
+            var error = new JcError("T35T", "Testing");
             _store.Setup(x => x.DeleteAsync(It.IsAny<ITenant>(), It.IsAny<CancellationToken>()))
                 .Returns(async () => await Task.FromResult(JcResult.Failed(error)));
 
