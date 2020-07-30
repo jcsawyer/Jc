@@ -20,8 +20,8 @@ namespace Microsoft.Extensions.DependencyInjection
             Type tenantType,
             IServiceCollection services)
         {
-            TenantType = tenantType;
-            Services = services;
+            TenantType = tenantType ?? throw new ArgumentNullException(nameof(tenantType));
+            Services = services ?? throw new ArgumentNullException(nameof(services));
         }
 
         /// <summary>
