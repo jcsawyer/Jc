@@ -9,10 +9,6 @@ namespace Jc.MultiTenancy.EntityFramework
     /// </summary>
     public class TenantDbContext : TenantDbContext<Tenant>
     {
-        /// <summary>
-        /// Initializes a new <see cref="TenantDbContext"/>
-        /// </summary>
-        protected TenantDbContext() { }
     }
 
     /// <summary>
@@ -34,8 +30,15 @@ namespace Jc.MultiTenancy.EntityFramework
         /// <param name="options"><see cref="DbContextOptions"/> options</param>
         public TenantDbContext(DbContextOptions options) : base(options) { }
 
+        /// <summary>
+        /// Initializes a new <see cref="TenantDbContext{TTenant}"/> with
+        /// the specified <paramref name="options"/>
+        /// </summary>
+        /// <param name="options"><see cref="DbContextOptions{TenantDbContext}"/> options</param>
+        public TenantDbContext(DbContextOptions<TenantDbContext> options) : base(options) { }
+
         /// <inheritdoc cref="DbSet{TTenant}"/>
-        public DbSet<TTenant> Tenants { get; set; }
+        public virtual DbSet<TTenant> Tenants { get; set; }
 
         /// <inheritdoc cref="DbContext.OnModelCreating(ModelBuilder)"/>
         protected override void OnModelCreating(ModelBuilder builder)

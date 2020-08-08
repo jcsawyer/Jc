@@ -54,7 +54,7 @@ namespace Jc.MultiTenancy.EntityFramework
         /// </summary>
         /// <param name="context"><typeparamref name="TContext"/> tenant database context</param>
         public TenantStore([NotNull] TContext context)
-            => Context = context;
+            => Context = context ?? throw new ArgumentNullException(nameof(context));
 
         /// <summary>
         /// Gets or sets the tenant database <typeparamref name="TContext"/>
@@ -137,7 +137,7 @@ namespace Jc.MultiTenancy.EntityFramework
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
 
-            return TenantsSet.FirstOrDefaultAsync(x => x.Name == name);
+            return TenantsSet.FirstOrDefaultAsync(x => x.Name == name, cancellationToken);
         }
 
         /// <inheritdoc/>
@@ -146,7 +146,7 @@ namespace Jc.MultiTenancy.EntityFramework
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
 
-            return TenantsSet.FirstOrDefaultAsync(x => x.Host == host);
+            return TenantsSet.FirstOrDefaultAsync(x => x.Host == host, cancellationToken);
         }
     }
 }
