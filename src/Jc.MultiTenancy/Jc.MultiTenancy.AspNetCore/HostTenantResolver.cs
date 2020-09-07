@@ -34,7 +34,7 @@ namespace Jc.MultiTenancy.AspNetCore
             [NotNull] IOptions<MemoryCacheTenantResolverOptions> options,
             [NotNull] ILogger<HostTenantResolver<TTenant>> logger,
             [NotNull] ITenantStore<TTenant> store,
-            [NotNull] IHttpContextAccessor httpAccessor) : base(cache, logger, options.Value)
+            [NotNull] IHttpContextAccessor httpAccessor) : base(cache, logger, options)
         {
             _store = store;
             _context = httpAccessor.HttpContext;
@@ -56,7 +56,7 @@ namespace Jc.MultiTenancy.AspNetCore
         }
 
         /// <inheritdoc/>
-        protected override async Task<TTenant> ResolveAsync(CancellationToken cancellationToken = default)
+        public override async Task<TTenant> ResolveAsync(CancellationToken cancellationToken = default)
         {
             var tenantIdentifier = GetTenantIdentifier();
             _logger.LogDebug($"Attempting to resolve tenant with host \"{tenantIdentifier}\"");

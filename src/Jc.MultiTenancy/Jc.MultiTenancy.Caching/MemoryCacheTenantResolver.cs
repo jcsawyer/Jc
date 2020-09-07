@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Generic;
@@ -24,19 +25,6 @@ namespace Jc.MultiTenancy.Caching
 
         /// <summary>
         /// Initializes a <see cref="MemoryCacheTenantResolver{TTenant}"/> using the
-        /// given <paramref name="cache"/> and <paramref name="logger"/> with
-        /// the default <see cref="MemoryCacheTenantResolverOptions"/>
-        /// </summary>
-        /// <param name="cache"><see cref="IMemoryCache"/> cache</param>
-        /// <param name="logger"><see cref="ILogger{MemoryCacheTenantResolver{TTenant}}"/> logger</param>
-        public MemoryCacheTenantResolver(
-            [NotNull]IMemoryCache cache,
-            [NotNull]ILogger<MemoryCacheTenantResolver<TTenant>> logger)
-            : this(cache, logger, new MemoryCacheTenantResolverOptions()) 
-        { }
-
-        /// <summary>
-        /// Initializes a <see cref="MemoryCacheTenantResolver{TTenant}"/> using the
         /// given <paramref name="cache"/>, <paramref name="logger"/> and 
         /// <paramref name="options"/>
         /// </summary>
@@ -46,11 +34,11 @@ namespace Jc.MultiTenancy.Caching
         public MemoryCacheTenantResolver(
             [NotNull]IMemoryCache cache,
             [NotNull]ILogger<MemoryCacheTenantResolver<TTenant>> logger,
-            [NotNull]MemoryCacheTenantResolverOptions options)
+            IOptions<MemoryCacheTenantResolverOptions> options = null)
         {
             _cache = cache;
             _logger = logger;
-            _options = options;
+            _options = options?.Value ?? new MemoryCacheTenantResolverOptions();
         }
 
         /// <summary>
@@ -88,14 +76,14 @@ namespace Jc.MultiTenancy.Caching
         {
             cancellationToken.ThrowIfCancellationRequested();
             var cacheKey = GetTenantIdentifier();
-            if (cacheKey == null)
+            if (string.IsNullOrEmpty(cacheKey))
                 return null;
 
             var tenant = _cache.Get<TTenant>(cacheKey);
             if (tenant == null)
             {
                 _logger.LogDebug($"Tenant not found in cache with key \"{cacheKey}\".{Environment.NewLine}\tAttempting to resolve");
-                tenant = await ResolveAsync();
+                tenant = await ResolveAsync(cancellationToken);
 
                 if (tenant != null)
                 {
