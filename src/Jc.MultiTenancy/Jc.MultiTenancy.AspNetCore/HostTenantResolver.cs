@@ -56,7 +56,7 @@ namespace Jc.MultiTenancy.AspNetCore
         }
 
         /// <inheritdoc/>
-        public override async Task<TTenant> ResolveAsync(CancellationToken cancellationToken = default)
+        protected override async Task<TTenant> ResolveAsync(CancellationToken cancellationToken = default)
         {
             var tenantIdentifier = GetTenantIdentifier();
             _logger.LogDebug($"Attempting to resolve tenant with host \"{tenantIdentifier}\"");

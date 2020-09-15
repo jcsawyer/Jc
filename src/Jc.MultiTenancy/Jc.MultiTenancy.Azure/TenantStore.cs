@@ -18,11 +18,14 @@ namespace Jc.MultiTenancy.Azure
     public class TenantStore : TenantStore<Tenant>
     {
         /// <summary>
-        /// Initializes a <see cref="TenantStore"/> with the given
-        /// blob storage <paramref name="options"/>
+        /// Initializes a <see cref="TenantStore"/> with the given <paramref name="client"/>
+        /// and blob storage <paramref name="options"/>
         /// </summary>
+        /// <param name="client"><see cref="BlobServiceClient"/> blob client</param>
         /// <param name="options"><see cref="BlobTenantStoreOptions"/> blob options</param>
-        public TenantStore([NotNull]BlobTenantStoreOptions options) : base(options) { }
+        public TenantStore(
+            [NotNull]BlobServiceClient client,
+            [NotNull]BlobTenantStoreOptions options) : base(client, options) { }
     }
 
     /// <summary>
@@ -32,16 +35,24 @@ namespace Jc.MultiTenancy.Azure
     public class TenantStore<TTenant> : ITenantStore<TTenant>
         where TTenant : Tenant
     {
+        private const string _code = "102";
+        private readonly BlobServiceClient _client;
         private readonly BlobTenantStoreOptions _options;
         private bool _isDisposed;
 
         /// <summary>
         /// Initializes a <see cref="TenantStore"/> for <typeparamref name="TTenant"/>s
-        /// with the given blob storage <paramref name="options"/>
+        /// with the given <paramref name="client"/> and blob storage <paramref name="options"/>
         /// </summary>
+        /// <param name="client"><see cref="BlobServiceClient"/> blob client</param>
         /// <param name="options"><see cref="BlobTenantStoreOptions"/> blob options</param>
-        public TenantStore([NotNull]BlobTenantStoreOptions options)
-            => _options = options;
+        public TenantStore(
+            [NotNull]BlobServiceClient client,
+            [NotNull]BlobTenantStoreOptions options)
+        {
+            _client = client ?? throw new ArgumentNullException(nameof(client));
+            _options = options ?? throw new ArgumentNullException(nameof(options));
+        }
 
         /// <inheritdoc/>
         public async Task<JcResult> CreateAsync([NotNull] TTenant tenant, CancellationToken cancellationToken = default)
@@ -50,7 +61,14 @@ namespace Jc.MultiTenancy.Azure
             ThrowIfDisposed();
 
             var tenants = (await LoadTenantsFromBlobStorageAsync(cancellationToken)).ToList();
-            
+
+            if (tenants.Any(x => x.Name.Equals(tenant.Name) && x.Host.Equals(tenant.Host)))
+                return JcResult.Failed(new JcError($"{_code}101", $"Tenant with name {tenant.Name} and host {tenant.Host} already exists"));
+            else if (tenants.Any(x => x.Name.Equals(tenant.Name)))
+                return JcResult.Failed(new JcError($"{_code}102", $"Tenant with name {tenant.Name} already exists"));
+            else if (tenants.Any(x => x.Host.Equals(tenant.Host)))
+                return JcResult.Failed(new JcError($"{_code}103", $"Tenant with host {tenant.Host} already exists"));
+
             tenants.Add(tenant);
             await SaveTenantsToBlobStorageAsync(tenants, cancellationToken);
             
@@ -64,9 +82,19 @@ namespace Jc.MultiTenancy.Azure
             ThrowIfDisposed();
             
             var tenants = (await LoadTenantsFromBlobStorageAsync(cancellationToken)).ToList();
-            var tenantToUpdate = tenants.SingleOrDefault(x => x.Id == tenant.Id);
+            var matchingTenants = tenants.Where(x => x.Id == tenant.Id || x.Name == tenant.Name || x.Host == tenant.Host);
 
-            tenantToUpdate = tenant;
+            if (matchingTenants.Count() == 0)
+                return JcResult.Failed(new JcError($"{_code}201", "Tenant not found"));
+            else if (matchingTenants.Count() > 1)
+                return JcResult.Failed(new JcError($"{_code}202", "Multiple tenants found"));
+
+            var tenantToUpdate = matchingTenants.First();
+            tenantToUpdate.Id = tenant.Id;
+            tenantToUpdate.Name = tenant.Name;
+            tenantToUpdate.Host = tenant.Host;
+            tenantToUpdate.IsActive = tenant.IsActive;
+
             await SaveTenantsToBlobStorageAsync(tenants, cancellationToken);
             
             return JcResult.Success;
@@ -79,9 +107,14 @@ namespace Jc.MultiTenancy.Azure
             ThrowIfDisposed();
 
             var tenants = (await LoadTenantsFromBlobStorageAsync(cancellationToken)).ToList();
-            var tenantToDelete = tenants.SingleOrDefault(x => x.Id == tenant.Id);
+            var matchingTenants = tenants.Where(x => x.Id == tenant.Id || x.Name == tenant.Name || x.Host == tenant.Host);
 
-            tenants.Remove(tenantToDelete);
+            if (matchingTenants.Count() == 0)
+                return JcResult.Failed(new JcError($"{_code}301", "Tenant not found"));
+            else if (matchingTenants.Count() > 1)
+                return JcResult.Failed(new JcError($"{_code}302", "Multiple tenants found"));
+
+            tenants.Remove(matchingTenants.First());
             await SaveTenantsToBlobStorageAsync(tenants, cancellationToken);
 
             return JcResult.Success;
@@ -154,15 +187,17 @@ namespace Jc.MultiTenancy.Azure
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
 
-            var serviceClient = new BlobServiceClient(_options.ConnectionString);
-            var container = serviceClient.GetBlobContainerClient(_options.ContainerName);
+            var container = _client.GetBlobContainerClient(_options.ContainerName);
             var blob = container.GetBlobClient(_options.BlobName);
-            
+
+            if (!await blob.ExistsAsync(cancellationToken))
+                return new List<TTenant>();
+
+            var download = await blob.DownloadAsync(cancellationToken);
             using (var stream = new MemoryStream())
             {
-                await blob.DownloadToAsync(stream);
-                var tenants = await JsonSerializer.DeserializeAsync<List<TTenant>>(stream);
-
+                var tenants = await JsonSerializer.DeserializeAsync<List<TTenant>>(download.Value.Content, cancellationToken: cancellationToken);
+                
                 return tenants;
             }
         }
@@ -171,21 +206,19 @@ namespace Jc.MultiTenancy.Azure
         /// Saves all <paramref name="tenants"/> to azure blob storage
         /// </summary>
         /// <param name="tenants"><see cref="IEnumerable{TTenant}"/> tenats</param>
-        /// <returns>An await <see cref="Task"/></returns>
+        /// <returns>An awaitable <see cref="Task"/></returns>
         protected virtual async Task SaveTenantsToBlobStorageAsync(IEnumerable<TTenant> tenants, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
 
-            var serviceClient = new BlobServiceClient(_options.ConnectionString);
-            var container = serviceClient.GetBlobContainerClient(_options.ContainerName);
+            var container = _client.GetBlobContainerClient(_options.ContainerName);
             var blob = container.GetBlobClient(_options.BlobName);
-            
-            using (var stream = new MemoryStream())
-            {
-                await blob.UploadAsync(stream);
-                await JsonSerializer.SerializeAsync(stream, tenants);
-            }
+
+            var data = JsonSerializer.SerializeToUtf8Bytes(tenants);
+
+            using (var stream = new MemoryStream(data))
+                await blob.UploadAsync(stream, overwrite: true, cancellationToken);
         }
 
         /// <summary>

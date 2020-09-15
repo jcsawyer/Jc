@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 
 using Jc.MultiTenancy;
 using Jc.MultiTenancy.Azure;
+using Azure.Storage.Blobs;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -44,6 +45,10 @@ namespace Microsoft.Extensions.DependencyInjection
             optionsAction?.Invoke(options);
 
             services.TryAddScoped(services => options);
+            services.TryAddScoped(typeof(BlobServiceClient), (services) => {
+                var options = services.GetRequiredService<BlobTenantStoreOptions>();
+                return new BlobServiceClient(options.ConnectionString);
+            });
             services.TryAddScoped(typeof(ITenantStore<>).MakeGenericType(tenantType), tenantStoreType);
         }
     }
