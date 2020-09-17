@@ -16,7 +16,7 @@ namespace Jc.MultiTenancy.AspNetCore
         /// </summary>
         /// <param name="tenant"><typeparamref name="TTenant"/> tenant</param>
         public TenantContext([NotNull] TTenant tenant)
-            => Tenant = tenant;
+            => Tenant = tenant ?? throw new ArgumentNullException(nameof(tenant));
 
         /// <summary>
         /// Gets the context unique identifier

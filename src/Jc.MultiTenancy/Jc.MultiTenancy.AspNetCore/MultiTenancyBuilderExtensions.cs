@@ -19,7 +19,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <typeparam name="TResolver">Type of <see cref="ITenantResolver{TTenant}"/></typeparam>
         /// <returns><see cref="MultiTenancyBuilder"/> builder</returns>
-        public static MultiTenancyBuilder AddResolver<TResolver>(this MultiTenancyBuilder builder)
+        public static MultiTenancyBuilder AddHostResolver<TResolver>(this MultiTenancyBuilder builder)
             where TResolver : class
         {
             AddResolverServices(builder.Services, builder.TenantType, typeof(TResolver));
@@ -49,7 +49,7 @@ namespace Microsoft.Extensions.DependencyInjection
             Type resolverType)
         {
             services.AddScoped(typeof(ITenantResolver<>).MakeGenericType(tenantType), resolverType);
-            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             if (typeof(MemoryCacheTenantResolver<>).MakeGenericType(tenantType).IsAssignableFrom(resolverType))
                 services.AddMemoryCache();
